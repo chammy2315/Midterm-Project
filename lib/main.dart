@@ -40,7 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final List<Widget> _screens = [
     const Center(child: Text('Welcome to the Task Manager App')), // Home Tab
     TaskManagerScreen(), // Tasks Tab
-    TaskHistoryScreen(), // History Tab
+    const TaskHistoryScreen(), // History Tab
   ];
 
   void _onItemTapped(int index) {
@@ -51,6 +51,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Responsive padding and text scale based on screen size
+    final mediaQuery = MediaQuery.of(context);
+    final isTabletOrLarger = mediaQuery.size.width > 600; // Example breakpoint
+
     return Scaffold(
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -62,6 +66,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
         ],
       ),
+      // Add responsive padding for the bottom navigation bar
+      bottomSheet: isTabletOrLarger
+          ? Padding(
+              padding: EdgeInsets.all(mediaQuery.size.width * 0.02),
+              child: Text(
+                "Tablet Mode: Enjoy the expanded view!",
+                style: TextStyle(fontSize: mediaQuery.size.width * 0.015),
+              ),
+            )
+          : null,
     );
   }
 }

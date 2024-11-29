@@ -1,4 +1,3 @@
-// lib/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'task_manager_screen.dart';
@@ -18,7 +17,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final List<Widget> _screens = [
     const Center(child: Text('Welcome to the Task Manager App')), // Home
     TaskManagerScreen(), // Tasks
-    TaskHistoryScreen(), // History
+    const TaskHistoryScreen(), // History
   ];
 
   void _onItemTapped(int index) {
@@ -29,15 +28,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width and height
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      body: _screens[_selectedIndex],
+      appBar: AppBar(
+        title: Text(
+          _selectedIndex == 0 ? 'Home' : _selectedIndex == 1 ? 'Tasks' : 'History',
+          style: TextStyle(fontSize: screenWidth * 0.06), // Adjusting font size for title
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+        child: Center(
+          child: _screens[_selectedIndex],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Tasks'),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, size: screenWidth * 0.08), // Adjust icon size
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.task, size: screenWidth * 0.08), // Adjust icon size
+            label: 'Tasks',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history, size: screenWidth * 0.08), // Adjust icon size
+            label: 'History',
+          ),
         ],
       ),
     );
